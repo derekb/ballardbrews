@@ -1,6 +1,17 @@
 const cheerio = require('cheerio')
 const got = require('got')
 
+function sanitizeFormFactor(input) {
+    switch (input) {
+        case '16oz 4-pack icon':
+            return '16oz 4-pack'
+        case 'crowler icon':
+            return 'crowler';
+        default:
+            break;
+    }
+}
+
 function parseCloudburst(data) {
     let $ = cheerio.load(data)
 
@@ -19,13 +30,13 @@ function parseCloudburst(data) {
             abv: abv,
             ibu: ibu,
             style: style,
-            formFactor: formFactors
+            formFactor: formFactors.map(sanitizeFormFactor)
         }
     }
 
     let getFormFactor = (formatData) => {
         if (!formatData) {
-            return ['']
+            return []
         }
 
         return $('.item-meta .format-icons img', formatData).toArray().map(x => $(x).attr("alt"))
