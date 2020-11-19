@@ -1,5 +1,5 @@
-const cheerio = require('cheerio')
-const got = require('got')
+import cheerio from 'cheerio'
+import got from 'got'
 
 async function getBeers() {
     let {body} = await got('https://cloudburstbrew.com/location/5456-shilshole-ave-nw/#on-tap')
@@ -7,13 +7,13 @@ async function getBeers() {
     return parseBeers(body)
 }
 
-function parseBeers(data) {
+function parseBeers(data: string) {
     let $ = cheerio.load(data)
 
     let togo = $('.taplist')[1]
     let beers = $('.list-item', togo).toArray()
 
-    let parseBeer = (rawBeer) => {
+    let parseBeer = (rawBeer: cheerio.Element) => {
         let name = $('.item-title', rawBeer).text().trim()
         let abv = $('.item-abv', rawBeer).text().trim()
         let ibu = $('.item-ibu .value', rawBeer).text().trim()
@@ -29,7 +29,7 @@ function parseBeers(data) {
         }
     }
 
-    let getFormFactor = (formatData) => {
+    let getFormFactor = (formatData: cheerio.Element) => {
         if (!formatData) {
             return []
         }
@@ -51,4 +51,6 @@ function sanitizeFormFactor(input) {
     }
 }
 
-exports.getBeers = getBeers
+export const Cloudburst = {
+    getBeers
+}
