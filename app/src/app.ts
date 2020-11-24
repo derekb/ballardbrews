@@ -1,7 +1,13 @@
-import { Cloudburst } from './scrapers/cloudburst'
-import { Reubens } from './scrapers/reubens'
+import { BreweryScraper } from './scrapers/BreweryScraper';
+import { Cloudburst } from './scrapers/Cloudburst'
+import { Reubens } from './scrapers/Reubens'
 
-Cloudburst.getBeers()
-    .then(beers => console.log(beers))
-Reubens.getBeers()
-    .then(beers => console.log(beers))
+let cloudburst = new Cloudburst();
+let reubens = new Reubens();
+
+let scrapers : BreweryScraper[] = [ cloudburst, reubens ]
+
+Promise
+    .all(scrapers.flatMap(x => x.getBeers()))
+    .then(beers => beers.flatMap(x => x))
+    .then(beer => console.log(beer))

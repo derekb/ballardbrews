@@ -4,6 +4,7 @@ interface Beer {
     ibu?: number;
     style: string;
     formFactor: FormFactor[];
+    breweryName: string;
 }
 
 enum FormFactor {
