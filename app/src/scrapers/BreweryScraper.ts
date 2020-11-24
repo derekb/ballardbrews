@@ -1,6 +1,6 @@
-import { Beer } from '../models/beer'
+import { Beer } from "../models/beer";
 
 export interface BreweryScraper {
-    getBeers() : Promise<Beer[]> 
-    getBreweryName() : string
+  getBeers(): Promise<Beer[]>;
+  getBreweryName(): string;
 }
