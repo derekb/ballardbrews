@@ -1,3 +1,4 @@
+import { Beer, FormFactor } from '../models/beer'
 import cheerio from 'cheerio'
 import got from 'got'
 
@@ -7,13 +8,13 @@ async function getBeers() {
     return parseBeers(body)
 }
 
-function parseBeers(data: string) {
+function parseBeers(data: string): Beer[] {
     let $ = cheerio.load(data)
 
     let togo = $('.taplist')[1]
     let beers = $('.list-item', togo).toArray()
 
-    let parseBeer = (rawBeer: cheerio.Element) => {
+    let parseBeer = (rawBeer: cheerio.Element) : Beer => {
         let name = $('.item-title', rawBeer).text().trim()
         let abv = $('.item-abv', rawBeer).text().trim()
         let ibu = $('.item-ibu .value', rawBeer).text().trim()
@@ -22,8 +23,8 @@ function parseBeers(data: string) {
     
         return {
             name: name,
-            abv: abv,
-            ibu: ibu,
+            abv: parseInt(abv),
+            ibu: parseInt(ibu),
             style: style,
             formFactor: formFactors.map(sanitizeFormFactor)
         }
@@ -32,22 +33,24 @@ function parseBeers(data: string) {
     let getFormFactor = (formatData: cheerio.Element) => {
         if (!formatData) {
             return []
-        }
-
-        return $('.item-meta .format-icons img', formatData).toArray().map(x => $(x).attr("alt"))
+        }            
+        
+        return $('.item-meta .format-icons img', formatData)
+            .toArray()
+            .map(x => $(x).attr("alt"))
     }
 
     return beers.map(parseBeer)
 }
 
-function sanitizeFormFactor(input) {
+function sanitizeFormFactor(input : string | undefined) {
     switch (input) {
         case '16oz 4-pack icon':
-            return '16oz 4-pack'
+            return FormFactor.FourPack
         case 'crowler icon':
-            return 'crowler';
+            return FormFactor.Crowler;
         default:
-            break;
+            return FormFactor.Crowler;
     }
 }
 
