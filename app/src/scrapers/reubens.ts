@@ -1,4 +1,4 @@
-import { Beer, FormFactor } from "../models/beer";
+import { Beer, FormFactor } from "../models/Beer";
 import cheerio from "cheerio";
 import got from "got";
 import { BreweryScraper } from "./BreweryScraper";
