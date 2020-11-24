@@ -1,19 +1,22 @@
 {
   "name": "ballardbrews",
   "version": "1.0.0",
-  "main": "app.ts",
+  "main": "src/app.ts",
   "author": "Derek Burkgren",
   "license": "MIT",
   "scripts": {
-    "scrape": "ts-node src/app.ts"
+    "start": "ts-node .",
+    "tsc": "tsc"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
     "got": "^11.8.0"
   },
   "devDependencies": {
     "@tsconfig/node12": "^1.0.7",
     "@types/cheerio": "^0.22.22",
+    "@types/express": "^4.17.9",
     "@types/got": "^9.6.11",
     "@types/node": "^14.14.8",
     "prettier": "2.2.0",
